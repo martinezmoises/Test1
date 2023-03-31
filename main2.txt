@@ -1,0 +1,67 @@
+//Filename: main.go
+
+package main
+
+import (
+	"log"
+	"math/rand"
+	"net/http"
+	"time"
+)
+
+type K string
+type V string
+
+func pick(m map[K]V) V {
+	k := rand.Intn(len(m))
+	for _, x := range m {
+		if k == 0 {
+			return x
+		}
+		k--
+	}
+	panic("unreachable")
+}
+
+// create a handler
+func home(w http.ResponseWriter, r *http.Request) { //Deals with the http methods
+	w.Write([]byte(" Hello my name is Moises Martinez.\n I enjoy swimming and excersing.\n I dislike when people whisper.\n My email address is: 2021154670@ub.edu.bz\n"))
+}
+
+func greeting(w http.ResponseWriter, r *http.Request) {
+	//greeting -> display the day and tthe time -> "Right now is 1:45pm" use time package, "Enjoy the rest of the day";
+	currentTime := time.Now()
+	w.Write([]byte("\n The current time right now is: " + currentTime.Format("15:04:05 ")))
+	w.Write([]byte("-> Enjoy the rest of your day :)\n"))
+
+}
+
+func random(w http.ResponseWriter, r *http.Request) {
+
+	m := map[K]V{
+		"quote1": "The most difficult thing is the decision to act. The rest is merely tenacity. The fears are paper tigers. You can do anything you decide to do. You can act to change and control your life; and the procedure, the process, is its own reward.",
+		"quote2": "Spit on your hands and get busy. Your blood will start circulating; your mind will start ticking—and pretty soon this whole positive upsurge of life in your body will drive worry from your mind. Get busy. Keep busy. It’s the cheapest kind of medicine there is on this earth—and one of the best. - Dale Carnegie",
+		"quote3": "To forgive is to set a prisoner free and discover that the prisoner was you. - Lewis B. Smedes",
+		"quote4": "Where you are is a result of who you were, but where you go depends entirely on who you choose to be. - Hal Elrod (check source)",
+		"quote5": "The man who asks a question is a fool for a minute. The man who does not ask is a fool for a minute",
+	}
+
+	w.Write([]byte(pick(m)))
+}
+
+func main() {
+
+	mux := http.NewServeMux() //Multiplexer(map)
+	mux.HandleFunc("/", home)
+	mux.HandleFunc("/greeting", greeting)
+	mux.HandleFunc("/random", random)        //Bascially where to go
+	log.Print("starting server on :4000")    //Just printing an the server address
+	err := http.ListenAndServe(":4000", mux) //Creating our web server
+	log.Fatal(err)
+
+	//The client sends a request to the web server the sever then sends the request to the multiplexer which then sends it to the handler
+	//This is how the request is processed
+	//Client->Server->Multiplexer->Handler
+	//This is how the response is sent back to the server
+	//Handler->Multiplexer->Server->CLient
+}

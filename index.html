@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test1</title>
+    <style>
+        body{
+            background-color: #b293fc;
+            color: white;
+        }
+
+        h1 {
+            color: white; 
+            font-size: 45px; 
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        p {
+            font-size: 25px;
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            font-style: italic;
+        }
+
+        img {
+            width: 10%;
+            height: 10%;
+        }
+        
+    </style>
+</head>
+<body>
+    <header> <center><h1>{{ .Headline }}</h1></header></center>
+    <center>
+    <br>
+    <p> {{ .Body }} </p> 
+    <br>
+    <p> {{ .Time }} </p>
+    <br>
+    <p> {{ .Quotes}}</p>
+    </center>
+</body>
+</html>
